@@ -1,0 +1,6 @@
+nengo
+nengo-ocl
+numpy
+opencv-python
+pillow
+matplotlib
