@@ -5,7 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-def load_spiral(color=(255, 0, 0), bg_color=255, cont_color=0, cont_bg=255, show=False):
+def load_spiral(color=(255, 255, 255), bg_color=(255, 0, 0), cont_color=0, cont_bg_color=255, show=False):
     """
     Load the spiral inputs and adjust the colors.
 
@@ -13,7 +13,7 @@ def load_spiral(color=(255, 0, 0), bg_color=255, cont_color=0, cont_bg=255, show
         color: spiral color.
         bg_color: background color.
         cont_color: test contour color.
-        cont_bg: background color for the test contour.
+        cont_bg_color: background color for the test contour.
         show: show the images.
 
     Returns:
@@ -25,17 +25,17 @@ def load_spiral(color=(255, 0, 0), bg_color=255, cont_color=0, cont_bg=255, show
     cont_out = root / 'cont_outer_50x50.png'
     cont_in = root / 'cont_inner_50x50.png'
 
-    info = dict(color=color, bg_color=bg_color, cont_color=cont_color, cont_bg=cont_bg)
+    info = dict(color=color, bg_color=bg_color, cont_color=cont_color, cont_bg_color=cont_bg_color)
 
     img = np.array(PIL.Image.open(color_img).convert('RGB'))
-    color_mask = np.all(img==(255, 0, 0), axis=-1)
-    img[color_mask] = color
-    img[~color_mask] = bg_color
+    bg_mask = np.all(img == (255, 0, 0), axis=-1)
+    img[bg_mask] = bg_color
+    img[~bg_mask] = color
 
     def update_cont(cont_img):
         cont = np.array(PIL.Image.open(cont_img).convert('RGB'))
         cont[cont == 0] = cont_color
-        cont[cont == 255] = cont_bg
+        cont[cont == 255] = cont_bg_color
         return cont
 
     cont_full, cont_out, cont_in = [update_cont(cont_img) for cont_img in [cont_full, cont_out, cont_in]]
